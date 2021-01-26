@@ -3,7 +3,7 @@ from replykeyboards.replykeyboardvariables import *
 reply_keyboard_types = {
 
     client_menu_keyboard: {
-        "uz": {1: "Portfolio", 2: "Xizmatlarimiz", 3: "Biz bilan aloq", 4: "Biz haqimizda"},
+        "uz": {1: "Portfolio", 2: "Xizmatlarimiz", 3: "Biz bilan aloqa", 4: "Biz haqimizda"},
     },
     admin_menu_keyboard: {
         "uz": {1: "Yangi buyurtmalar", 2: "Qabul qilingan buyutmalar", 3: "Tarix", 4: "Sozlamalar"},
