@@ -22,6 +22,11 @@ reply_keyboard_types = {
     },
 
     location_keyboard: {
-        "uz": {1: 'keyingisi', 2: 'Geolokatsiyamni yuborish'}
+        "uz": {1: "keyingisi", 2: "Geolokatsiyamni yuborish"}
+    },
+
+    reg_confirm_keyboard: {
+        "uz": {1: "Tasdiqlash"}
     }
+
 }
