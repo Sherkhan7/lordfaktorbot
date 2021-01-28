@@ -1,4 +1,5 @@
 from DB import get_user
+from config import CHANNEL_USERNAME
 
 
 def set_user_data(user_id, user_data):
@@ -12,6 +13,12 @@ def set_user_data(user_id, user_data):
             value.pop('updated_at')
 
         user_data['user_data'] = value
+
+
+def check_member(user_id, context):
+    status = context.bot.get_chat_member(CHANNEL_USERNAME, user_id).status
+
+    return True if status == 'member' or status == 'creator' or status == 'administrator' else False
 
 
 def wrap_tags(*args):
