@@ -1,11 +1,11 @@
-from telegram import Update, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
+from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CommandHandler, MessageHandler, ConversationHandler, CallbackContext, Filters
 
-# from config import ACTIVE_ADMINS
+from config import CHANNEL_USERNAME
 from DB import insert_data
 
 from filters import *
-from helpers import set_user_data, wrap_tags
+from helpers import set_user_data, wrap_tags, check_member
 from languages import LANGS
 from globals import *
 from layouts import get_phone_number_layout
@@ -28,9 +28,10 @@ def do_command(update: Update, context: CallbackContext):
     command = update.message.text
 
     if user:
+        emoji = '\U000026A0'  # warning emoji
 
         if user[LANG] == LANGS[0]:
-            text = "Siz ro'yxatdan o'tgansiz"
+            text = "Siz ro'yxatdan o'tgansiz !"
 
         # if user[LANG] == LANGS[1]:
         #     text = "Вы зарегистрированы"
@@ -38,27 +39,26 @@ def do_command(update: Update, context: CallbackContext):
         # if user[LANG] == LANGS[2]:
         #     text = "Сиз рўйхатдан ўтгансиз"
 
-        text = f'\U000026A0 {text} !'
-
         if command == '/menu':
+            emoji = '\U0001F4D6'  # book emoji
 
             if user[LANG] == LANGS[0]:
-                reply_text = "Menyu"
+                text = "Menyu"
 
             # if user[LANG] == LANGS[1]:
-            #     reply_text = "Меню"
+            #     text = "Меню"
             #
             # if user[LANG] == LANGS[2]:
-            #     reply_text = "Меню"
+            #     text = "Меню"
 
-            text = f'\U0001F4D6 {reply_text}'
+        text = f'{emoji} {text}'
+        reply_keyboard = ReplyKeyboard(client_menu_keyboard, user[LANG]).get_keyboard()
 
-        # menu_keyboard = admin_menu_keyboard if user_data['user_data'][IS_ADMIN] else client_menu_keyboard
-        menu_keyboard = client_menu_keyboard
+        if not check_member(update.effective_user.id, context):
+            text = f"Botdan to'liq foydalanish uchun {CHANNEL_USERNAME} kanaliga obuna bo'ling !"
+            reply_keyboard = ReplyKeyboardRemove()
 
-        reply_keyboard = ReplyKeyboard(menu_keyboard, user[LANG]).get_keyboard()
         update.message.reply_text(text, reply_markup=reply_keyboard)
-
         state = ConversationHandler.END
 
     else:
@@ -73,7 +73,7 @@ def do_command(update: Update, context: CallbackContext):
         state = FULLNAME
         user_data[USER_INPUT_DATA][STATE] = state
 
-        logger.info('user_data: %s', user_data)
+        # logger.info('user_data: %s', user_data)
 
     return state
 
@@ -144,7 +144,7 @@ def fullname_callback(update: Update, context: CallbackContext):
 
         state = user_data[USER_INPUT_DATA][STATE]
 
-    logger.info('user_data: %s', user_data)
+    # logger.info('user_data: %s', user_data)
     return state
 
 
@@ -188,7 +188,7 @@ def phone_callback(update: Update, context: CallbackContext):
         state = ADDRESS
         user_data[USER_INPUT_DATA][STATE] = state
 
-    logger.info('user_data: %s', user_data)
+    # logger.info('user_data: %s', user_data)
     return state
 
 
@@ -198,16 +198,10 @@ def address_callback(update: Update, context: CallbackContext):
     user_data = context.user_data
 
     user_data[USER_INPUT_DATA][ADDRESS] = update.message.text
-    # text = "Geolokatsiyangizni yuboring.\n" \
-    #        f"Yoki bu bosqichni o'tkazib yuborinsh uchun {wrap_tags('keyingisi')} tugmasini bosing"
 
-    # reply_keyboard = ReplyKeyboard(location_keyboard, user_data[USER_INPUT_DATA][LANG]).get_keyboard()
-    # update.message.reply_text(context.bot.export_chat_invite_link('@mychannel_98'))
-    text = f"Botdan to'liq foydalanish uchun {wrap_tags('@mychannel_98')} kanaliga obuna bo'ling\n" \
-           f"Kanalga obuna bo'lganingizdan so'ng {wrap_tags('Tasdiqlash')} ni bosing"
-    reply_keyboard = ReplyKeyboardMarkup([
-        [KeyboardButton('Tasdiqlash')]
-    ], resize_keyboard=True)
+    text = f"Botdan to'liq foydalanish uchun {wrap_tags(CHANNEL_USERNAME)} kanaliga obuna bo'ling\n" \
+           f"Kanalga obuna bo'lganingizdan so'ng \U00002705 {wrap_tags('Tasdiqlash')} ni bosing"
+    reply_keyboard = ReplyKeyboard(reg_confirm_keyboard, user_data[USER_INPUT_DATA][LANG]).get_keyboard()
 
     update.message.reply_html(text, reply_markup=reply_keyboard)
 
@@ -224,20 +218,15 @@ def confirmation_callback(update: Update, context: CallbackContext):
     #     update_file.write(update.callback_query.to_json())
     user_data = context.user_data
 
-    chat_member = context.bot.get_chat_member('@mychannel_98', update.effective_user.id)
-    status = chat_member.status
-
-    if status == 'member' or status == 'creator' or status == 'administrator':
+    if check_member(update.effective_user.id, context):
 
         user_data[USER_INPUT_DATA].pop(STATE)
-        user_data[USER_INPUT_DATA]['is_ch_joined'] = True
-        user_data[USER_INPUT_DATA][STATUS] = True
 
         insert_data(user_data[USER_INPUT_DATA], 'users')
         set_user_data(update.effective_user.id, user_data)
         user = user_data['user_data']
 
-        text = f"\U0001F44F\U0001F44F\U0001F44F Tabriklaymiz siz ro'yxatdan o'tdingiz"
+        text = f"\U0001F44F\U0001F44F\U0001F44F Tabriklaymiz siz ro'yxatdan o'tdingiz !"
         menu_keyboard = client_menu_keyboard
 
         reply_keyboard = ReplyKeyboard(menu_keyboard, user[LANG]).get_keyboard()
@@ -249,8 +238,7 @@ def confirmation_callback(update: Update, context: CallbackContext):
 
     else:
 
-        update.message.reply_text("Kanalga obuna bo'ling:\n"
-                                  "@mychannel_98")
+        update.message.reply_text(f"{CHANNEL_USERNAME} kanaliga obuna bo'ling !")
 
         state = user_data[USER_INPUT_DATA][STATE]
 
@@ -269,7 +257,7 @@ registration_conversation_handler = ConversationHandler(
 
         ADDRESS: [MessageHandler(Filters.text & (~ Filters.command), address_callback)],
 
-        CONFIRMATION: [MessageHandler(Filters.regex('^Tasdiqlash$'), confirmation_callback)]
+        CONFIRMATION: [MessageHandler(Filters.regex('Tasdiqlash$'), confirmation_callback)]
     },
     fallbacks=[],
 
