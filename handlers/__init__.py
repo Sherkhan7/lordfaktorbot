@@ -1,1 +1,3 @@
 from .registrationconversation import registration_conversation_handler
+from .messagehandler import message_handler
+from .inlinekeyboardhandler import inline_keyboard_handler
