@@ -27,7 +27,7 @@ class ReplyKeyboard(object):
             return self.__get_location_keyboard(reply_keyboard_types[keyb_type][lang])
 
         elif keyb_type == reg_confirm_keyboard:
-            return self.__get_reg_confirm_keyboard(reply_keyboard_types[keyb_type[lang]])
+            return self.__get_reg_confirm_keyboard(reply_keyboard_types[keyb_type][lang])
 
     @staticmethod
     def __get_menu_keyboard(button, keyb_type):
