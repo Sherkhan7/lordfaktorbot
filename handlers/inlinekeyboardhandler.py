@@ -24,8 +24,8 @@ def inline_keyboards_handler_callback(update: Update, context: CallbackContext):
     callback_query = update.callback_query
     data = callback_query.data
 
-    with open('jsons/callback_query.json', 'w') as callback_query_file:
-        callback_query_file.write(callback_query.to_json())
+    # with open('jsons/callback_query.json', 'w') as callback_query_file:
+    #     callback_query_file.write(callback_query.to_json())
 
     if user and check_member(update.effective_user.id, context):
 
