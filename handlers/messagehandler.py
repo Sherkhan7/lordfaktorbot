@@ -32,12 +32,8 @@ def message_handler_callback(update: Update, context: CallbackContext):
 
             # Xizmatlarimiz
             elif text == reply_keyboard_types[client_menu_keyboard][user[LANG]][2]:
-                text = 'Xizmatlarmiz:\n' \
-                       '- SMM\n' \
-                       '- Telegram Bot yaratish\n' \
-                       '- WEB sayt yaratish\n' \
-                       '- Mobile ilovalar yaratish\n\n' \
-                       f'Kanalimiz: \U0001F449  {CHANNEL_USERNAME}'
+                text = f'Kanalimiz: \U0001F449  {CHANNEL_USERNAME}' \
+                       'Xizmatlarmiz:\n'
 
                 inline_keyboard = InlineKeyboard(services_keyboard, user[LANG]).get_keyboard()
 
