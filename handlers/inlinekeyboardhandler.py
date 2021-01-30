@@ -29,14 +29,9 @@ def inline_keyboards_handler_callback(update: Update, context: CallbackContext):
 
     if user and check_member(update.effective_user.id, context):
 
-        match_obj = re.search(r'^s_\w+$', data)
         match_obj_2 = re.search(r'[rc]_[yn]_\d+$', data)
         match_obj_3 = re.search(r'^w_\d+$', data)
         match_obj_4 = re.search(r'^h_w_\d+$', data)
-
-        if match_obj:
-            # callback_query.answer('Testing ...')
-            pass
 
     else:
         callback_query.answer(f"Siz {CHANNEL_USERNAME} kanaliga a'zo emassiz !\n\n"
