@@ -35,7 +35,8 @@ def inline_keyboards_handler_callback(update: Update, context: CallbackContext):
         match_obj_4 = re.search(r'^h_w_\d+$', data)
 
         if match_obj:
-            callback_query.answer('Testing ...')
+            # callback_query.answer('Testing ...')
+            pass
 
     else:
         callback_query.answer(f"Siz {CHANNEL_USERNAME} kanaliga a'zo emassiz !\n\n"

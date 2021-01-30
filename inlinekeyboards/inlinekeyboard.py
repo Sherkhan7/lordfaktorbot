@@ -70,10 +70,15 @@ class InlineKeyboard(object):
 
         return InlineKeyboardMarkup([
 
-            [InlineKeyboardButton(f'{service_1_emoji}  {service_1_text}', callback_data=f's_smm')],
-            [InlineKeyboardButton(f'{service_2_emoji}  {service_2_text}', callback_data=f's_bot')],
-            [InlineKeyboardButton(f'{service_3_emoji}  {service_3_text}', callback_data=f's_web')],
-            [InlineKeyboardButton(f'{service_4_emoji}  {service_4_text}', callback_data=f's_mobile')]
+            # [InlineKeyboardButton(f'{service_1_emoji}  {service_1_text}', callback_data=f's_smm')],
+            # [InlineKeyboardButton(f'{service_2_emoji}  {service_2_text}', callback_data=f's_bot')],
+            # [InlineKeyboardButton(f'{service_3_emoji}  {service_3_text}', callback_data=f's_web')],
+            # [InlineKeyboardButton(f'{service_4_emoji}  {service_4_text}', callback_data=f's_mobile')]
+
+            [InlineKeyboardButton(f'{service_1_emoji}  {service_1_text}', url='https://t.me/LordFaktor/13')],
+            [InlineKeyboardButton(f'{service_2_emoji}  {service_2_text}', url='https://t.me/LordFaktor/12')],
+            [InlineKeyboardButton(f'{service_3_emoji}  {service_3_text}', url='https://t.me/LordFaktor/11')],
+            [InlineKeyboardButton(f'{service_4_emoji}  {service_4_text}', url='https://t.me/LordFaktor/10')]
 
         ])
 
