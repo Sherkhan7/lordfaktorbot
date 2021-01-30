@@ -14,7 +14,6 @@ class InlineKeyboard(object):
     def __create_inline_keyboard(self, keyb_type, lang, data, history):
 
         if keyb_type == services_keyboard:
-
             return self.__get_services_keyboard(inline_keyboard_types[keyb_type][lang], data)
 
         # elif keyb_type == book_keyboard:
@@ -69,11 +68,6 @@ class InlineKeyboard(object):
         service_4_emoji = '\U0001F4F1'
 
         return InlineKeyboardMarkup([
-
-            # [InlineKeyboardButton(f'{service_1_emoji}  {service_1_text}', callback_data=f's_smm')],
-            # [InlineKeyboardButton(f'{service_2_emoji}  {service_2_text}', callback_data=f's_bot')],
-            # [InlineKeyboardButton(f'{service_3_emoji}  {service_3_text}', callback_data=f's_web')],
-            # [InlineKeyboardButton(f'{service_4_emoji}  {service_4_text}', callback_data=f's_mobile')]
 
             [InlineKeyboardButton(f'{service_1_emoji}  {service_1_text}', url='https://t.me/LordFaktor/13')],
             [InlineKeyboardButton(f'{service_2_emoji}  {service_2_text}', url='https://t.me/LordFaktor/12')],
